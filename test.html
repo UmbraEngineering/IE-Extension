@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test Document</title>
+
+	<!--[if IE]>
+		<script type="text/javascript" src="./ie-extension.js"></script>
+		<script type="text/javascript">
+			
+			IE.extend('input', function(input) {
+			//
+			// WHY IS INPUT.GETATTRIBUTE(PLACEHOLDER) NULL!?!?
+			//
+				console.log(input.outerHTML);
+				input.value = input.value || input.getAttribute('placeholder');
+			});
+
+		</script>
+	<![endif]-->
+</head>
+<body>
+	<input type="text" value="" placeholder="foo" />
+</body>
+</html>

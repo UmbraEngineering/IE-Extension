@@ -1,15 +1,15 @@
-DOM-Extension
+IE-Extension
 =============
 
-A tool to make it easier for developers to extend the DOM with new functionality (or to polyfill with old)
+A tool to make it easier for developers to extend old Internet Explorer with new features
 
 Basic Use
 ---------
 
 ```javascript
-// Extend all inputs with a placeholder attribute using the following code
-DOM.extend('input[placeholder]', function(input) {
-	// ...
+// Extend all inputs using the following code
+IE.extend('input', function(input) {
+	// Do something with every input
 });
 ```
 
@@ -18,8 +18,6 @@ This tool is particularly useful for implementing polyfills as it will always ca
 ```javascript
 var input = document.createElement('input');
 input.type = 'text';
-input.value = '';
-input.setAttribtue('placeholder', 'foo');
 document.body.appendChild(input);
 ```
 
