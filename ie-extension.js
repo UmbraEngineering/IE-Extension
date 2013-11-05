@@ -1,55 +1,53 @@
 
 // 
-// DOM Extension Project
+// IE Extension Project
 // 
 // Author: James Brumond <james@jbrumond.me> (http://www.jbrumond.me)
 // 
 // -------------------------------------------------------------
 // 
-// The DOM Extenstion Project is a tool used for extending the DOM with new functionality
-// using everything from standard methods, to deprecated functions, and dirty tricks to get
-// the best support for live DOM extension.
+// The IE Extenstion Project is a tool used for extending old IE with new functionality.
 // 
 
 (function(window, document, undefined) {
 	
-	var DOM = window.DOM = { };
+	var IE = window.IE = { };
 
 	// 
 	// This is the main exposed function, used to create new behaviors
 	// 
-	DOM.extend = function(selector, func) {
-		DOM.extend._with[DOM._determineMethod()](selector, func);
+	IE.extend = function(selector, func) {
+		IE.extend._with[IE._determineMethod()](selector, func);
 	};
 
 	// 
 	// Order of preference for extension methods
 	// 
-	DOM.methodPreference = ['behavior'];
+	IE.methodPreference = ['behavior'];
 
 	// 
 	// Determines the method to use for extension
 	// 
-	DOM._method = null;
-	DOM._determineMethod = function() {
-		if (! DOM._method) {
+	IE._method = null;
+	IE._determineMethod = function() {
+		if (! IE._method) {
 			var support = { };
-			forIn(DOM.extend._with, function(method, name) {
+			forIn(IE.extend._with, function(method, name) {
 				support[name] = method.supported();
 			});
-			for (var i = 0, c = DOM.methodPreference.length; i < c; i++) {
-				var method = DOM.methodPreference[i];
+			for (var i = 0, c = IE.methodPreference.length; i < c; i++) {
+				var method = IE.methodPreference[i];
 				if (support[method]) {
-					DOM._method = method;
+					IE._method = method;
 					break;
 				}
 			}
-			if (! DOM._method) {
-				throw new Error('DOM.extend - No known extension methods are supported for this client');
+			if (! IE._method) {
+				throw new Error('IE.extend - No known extension methods are supported for this client');
 			}
 		}
 
-		return DOM._method;
+		return IE._method;
 	};
 
 // -------------------------------------------------------------
@@ -57,40 +55,40 @@
 	// 
 	// Here we store the extension methods
 	// 
-	DOM.extend._with = { };
+	IE.extend._with = { };
 	
 	// 
 	// This is where we store functions for calls
 	// 
-	DOM.extend._functions = { };
-	DOM.extend._call = function(selector, elem) {
+	IE.extend._functions = { };
+	IE.extend._call = function(selector, elem) {
 		if (! elem._DOM) {
 			elem._DOM = {processedFor: { }};
 		}
 
-		if (! elem._DOM.processedFor[selector]) {
-			elem._DOM.processedFor[selector] = true;
-			DOM.extend._functions[selector].call(elem, elem);
+		if (! elem._IE.processedFor[selector]) {
+			elem._IE.processedFor[selector] = true;
+			IE.extend._functions[selector].call(elem, elem);
 		}
 	};
 
 	// 
 	// This function is used for extension using CSS behaviors (old IE)
 	// 
-	DOM.extend._with.behavior = function(selector, func) {
-		if (! DOM.extend._functions[selector]) {
-			DOM.extend._with.behavior.stylesheet().addRule(selector,
-				'behavior:expression(DOM.extend._call("' + selector + '", this))'
+	IE.extend._with.behavior = function(selector, func) {
+		if (! IE.extend._functions[selector]) {
+			IE.extend._with.behavior.stylesheet().addRule(selector,
+				'behavior:expression(IE.extend._call("' + selector + '", this))'
 			);
 		}
 	
-		DOM.extend._functions[selector].push(func);
+		IE.extend._functions[selector].push(func);
 	};
 
 	// 
 	// Determine if extension by CSS behavior is supported
 	// 
-	DOM.extend._with.behavior.supported = function() {
+	IE.extend._with.behavior.supported = function() {
 		// TODO
 		return true;
 	};
@@ -98,7 +96,7 @@
 	// 
 	// Gets the first stylesheet in the document, or creates one if none exists
 	// 
-	DOM.extend._with.behavior.stylesheet = function() {
+	IE.extend._with.behavior.stylesheet = function() {
 		if (! document.styleSheets.length) {
 			var root = document.getElementsByTagName('head')[0] || document.documentElement;
 			root.insertBefore(
@@ -112,7 +110,7 @@
 // -------------------------------------------------------------
 	
 	// 
-	// DOM Extension type returned from DOM.extend(); Used for further extension based on
+	// DOM Extension type returned from IE.extend(); Used for further extension based on
 	// non-init events.
 	// 
 	function DomExtension() {
